@@ -52,3 +52,32 @@ functions:
           method: options
       - http: ANY /
       - http: "ANY {proxy+}"
+
+
+package:
+  exclude:
+    - .env
+    - .vscode/**
+    - node_modules/**
+    - venv/**
+    - Makefile
+    - README.md
+
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-kms-secrets
+
+custom:
+  pythonRequirements:
+    invalidateCaches: true
+    dockerizePip: true
+    dockerFile: Dockerfile
+    usePipenv: true
+    usePoetry: false
+  wsgi:
+    app: app.app
+    packRequirements: false
+  stage: ${opt:stage, "local"}
+  region: ${opt:region, "eu-west-1"}
+  env: ${file(env.${self:provider.stage}.yml)}
