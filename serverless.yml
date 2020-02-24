@@ -1,0 +1,54 @@
+service: bettr-service
+
+provider:
+  name: aws
+  runtime: python3.8
+  variableSyntax: "\\${((?!AWS|cognito\\-identity)[ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}"
+  stage: ${self:custom.stage}
+  region: ${self:custom.region}
+  stackTags: bettr-service
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:ListBucket"
+#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+#            - "/*"
+  environment:
+    STAGE: ${self:provider.stage}
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.py
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.py
+#    - exclude-me-dir/**
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    # layers:
+    #   - Ref: Pgsql95LambdaLayer
+    #   - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pyodbc:6
+    events:
+      - http:
+          path: graphql
+          method: post
+          # authorizer:
+          #   type: COGNITO_USER_POOLS
+          #   authorizerId:
+          #     Ref: ApiGatewayAuthorizer
+      - http:
+          path: graphql
+          method: options
+      - http: ANY /
+      - http: "ANY {proxy+}"

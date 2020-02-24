@@ -1,0 +1,42 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "*"
+pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pyodbc = "==4.0.26"
+before_after = "*"
+requests-mock = "*"
+
+[packages]
+flask = "*"
+flask-graphql = "*"
+graphene = "==2.1.8"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
+python-dotenv = "*"
+graphene-sqlalchemy = "*"
+boto3 = "*"
+pyyaml = "*"
+flask-cors = "*"
+sqlalchemy = "*"
+pyjwt = "*"
+hashids = "*"
+validators = "*"
+phonenumbers = "*"
+psycopg2 = "*"
+stringcase = "*"
+blinker = "*"
+cython = "*"
+requests = "*"
+
+[requires]
+python_version = "3.8.1"
+
+[pipenv]
+allow_prereleases = true
